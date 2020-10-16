@@ -1,4 +1,4 @@
-function millProbedPoints(X,Y,Z,thickness,depth,feedrate)
+function sucktionSpiral(Suck,Dia,X,Y,Z,thickness,depth,feedrate)
     % Objective: After probing the skull, the user can generate a Gcode program for
     % milling the probed points.
     %
@@ -37,11 +37,6 @@ function millProbedPoints(X,Y,Z,thickness,depth,feedrate)
     ln = 4; %line number
     for j = 1:nPasses
         % Loop through each probed point
-        %ln = ln+1;
-        % Move to next X,Y,Z position
-        %fprintf(fileID,'%s\n', strcat("N", num2str(ln),...
-        %  " G90 G1 Z",num2str(Z(1)-min(j*depth,thickness)),...
-        %  " F",num2str(feedrate)));
         for i = 1:nProbedPoints
             ln = ln+1;
             % Move to next X,Y,Z position
@@ -54,10 +49,12 @@ function millProbedPoints(X,Y,Z,thickness,depth,feedrate)
         % Go back to the starting point of the circle so we can
         % vertically mill down the next loop of ii
         ln = ln+1;
-        fprintf(fileID,'%s\n', strcat("N", num2str(ln)," G91 G0 Z3"));
-        %ln = ln+1;
-        %fprintf(fileID,'%s\n', strcat("N", num2str(ln),...
-        %  " G0 Z",num2str(Z(1)-min(j*depth,thickness))));
+        fprintf(fileID,'%s\n', strcat("N", num2str(ln)," G91 G0 Z5"));
+        ln = ln+1;
+        fprintf(fileID,'%s\n', strcat("N", num2str(ln),...
+          " G0 X",num2str(X(1)),...
+          " Y",num2str(Y(1)),...
+          " Z",num2str(Z(1)-min(j*depth,thickness))));
     end
 
     % make footer commands

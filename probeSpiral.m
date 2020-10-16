@@ -1,4 +1,4 @@
-function [commandArray] = probeCircle(circDia,X,Y,Z,probeSpeed)
+function [commandArray] = probeSpiral(suckDia,circDia,X,Y,Z,probeSpeed)
     % Objective:  This function probes the skull in a circle centered on 
     % the input coordinates. A text file with gcode 
     % is then output which may then be sent to the Craniobot. The output file 
@@ -23,14 +23,18 @@ function [commandArray] = probeCircle(circDia,X,Y,Z,probeSpeed)
     % Choose resolution of points.
     numberPoints = 36;
     resolutionCirc = 2*pi/numberPoints;
+    nemberCircle = circDia*2/suckDia;
+    numberPointsTotal = numberPoints*nemberCircle
+    resolutionLen = circDia/numberPointsTotal
     %if((centerPos(1)^2+centerPos(2)^2)>circDia^2)
-    theta = 0:resolutionCirc:2*pi-resolutionCirc;
+    theta = 0:resolutionCirc:2*pi*nemberCircle-resolutionCirc;
+    length = 0:resolutionLen:circDia-resolutionLen;
     %else
     %    theta = 
 
     % Create circle projection
-    Xproj = centerPos(1) + circDia*sin(theta)/2;
-    Yproj = centerPos(2) + circDia*cos(theta)/2;
+    Xproj = centerPos(1) + length.*sin(theta)/2;
+    Yproj = centerPos(2) + length.*cos(theta)/2;
     offsetVal = 3.0;
     Zmin = -90; %used to define where the probe should home towards
     

@@ -1,4 +1,4 @@
-function [commandArray] = probeCircle(circDia,X,Y,Z,probeSpeed)
+function [commandArray] = probeDot(X,Y,Z,probeSpeed)
     % Objective:  This function probes the skull in a circle centered on 
     % the input coordinates. A text file with gcode 
     % is then output which may then be sent to the Craniobot. The output file 
@@ -21,16 +21,16 @@ function [commandArray] = probeCircle(circDia,X,Y,Z,probeSpeed)
     centerPos = Stereo2Robot*[X;Y;Z;1];
 
     % Choose resolution of points.
-    numberPoints = 36;
-    resolutionCirc = 2*pi/numberPoints;
+    numberPoints = 1;
+    %resolutionCirc = 2*pi/numberPoints;
     %if((centerPos(1)^2+centerPos(2)^2)>circDia^2)
-    theta = 0:resolutionCirc:2*pi-resolutionCirc;
+    %theta = 0:resolutionCirc:2*pi-resolutionCirc;
     %else
     %    theta = 
 
     % Create circle projection
-    Xproj = centerPos(1) + circDia*sin(theta)/2;
-    Yproj = centerPos(2) + circDia*cos(theta)/2;
+    Xproj = centerPos(1);
+    Yproj = centerPos(2);
     offsetVal = 3.0;
     Zmin = -90; %used to define where the probe should home towards
     
@@ -53,10 +53,9 @@ function [commandArray] = probeCircle(circDia,X,Y,Z,probeSpeed)
     
     % Loop through theta by 1 step
     ln = 3; % line number
-    for ii = 1:numberPoints
     % Move to next X,Y probing point
         ln = ln+1;
-        probePos = [Xproj(ii),Yproj(ii),Zoffset];
+        probePos = [Xproj,Yproj,Zoffset];
         fprintf(fileID,'%s\n', strcat("N",num2str(ln),...
             " G90 G0 X",num2str(probePos(1)),...
             " Y",num2str(probePos(2))));
@@ -69,7 +68,6 @@ function [commandArray] = probeCircle(circDia,X,Y,Z,probeSpeed)
     % Retract by offset amount
         fprintf(fileID,'%s\n',strcat("N", num2str(ln),...
             " G91 G0 Z",num2str(offsetVal)));
-    end
     
     % make footer commands
     fprintf(fileID,'%s\n',strcat("N", num2str(ln+1),...
