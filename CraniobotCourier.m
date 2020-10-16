@@ -1,7 +1,7 @@
 %% GUI Initializers
 function varargout = CraniobotCourier(varargin)
 % CRANIOBOTCOURIER MATLAB code for CraniobotCourier.fig
-% Last Modified by GUIDE v2.5 14-Oct-2020 15:49:05
+% Last Modified by GUIDE v2.5 16-Oct-2020 11:05:45
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -601,18 +601,14 @@ function ProbingMenu_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 if isempty(handles.skullPoints)
-    set(handles.clearSet1,'enable','off');
-    set(handles.editSet1,'enable','off');
+    set(handles.clearSet,'enable','off');
+    set(handles.editSet,'enable','off');
 else
-    set(handles.clearSet1,'enable','on');
-    set(handles.editSet1,'enable','on');
+    set(handles.clearSet,'enable','on');
+    set(handles.editSet,'enable','on');
 end
 end
-function MillingMenu_Callback(hObject, eventdata, handles)
-% hObject    handle to MillingMenu (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-end
+
 function probeCircleMenu_Callback(hObject, eventdata, handles)
 % Objective: create window to input probing parameters and generate gcode script 
 % hObject    handle to probeCircleMenu (see GCBO)
@@ -629,7 +625,7 @@ fig = figure('Name','Probing Parameters',...
     'ToolBar','none');
 figHandles = guidata(fig);
 handles.skullPoints = [];
-%guidata(hObject,handles);
+guidata(hObject,handles);
 % create window elements
 figHandles.chamberDiameterLabel = uicontrol(fig,'Style','text',...
     'Units','pixels',...
@@ -691,7 +687,7 @@ fig = figure('Name','Probing Parameters',...
     'ToolBar','none');
 figHandles = guidata(fig);
 handles.skullPoints = [];
-%guidata(hObject,handles);
+guidata(hObject,handles);
 % create window elements
 figHandles.chamberDiameterSLabel = uicontrol(fig,'Style','text',...
     'Units','pixels',...
@@ -757,7 +753,7 @@ fig = figure('Name','Probing Parameters',...
     'ToolBar','none');
 figHandles = guidata(fig);
 handles.skullPoints = [];
-%guidata(hObject,handles);
+guidata(hObject,handles);
 % create window elements
 figHandles.chamberLocationDLabel = uicontrol(fig,'Style','text',...
     'Units','pixels',...
@@ -796,7 +792,8 @@ function probeWindowMenu_Callback(hObject, eventdata, handles)
 % hObject    handle to probeWindowMenu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
+handles.skullPoints = [];
+guidata(hObject,handles);
 fig = figure('Name','Probing Parameters',...
     'Units','pixels',...
     'Position',[200,200,400,100],...
@@ -824,15 +821,15 @@ figHandles.probeSkullButton = uicontrol(fig,'Style','pushbutton',...
 
 guidata(fig,figHandles);
 end
-function clearSet1_Callback(hObject, eventdata, handles)
-% hObject    handle to clearSet1 (see GCBO)
+function clearSet_Callback(hObject, eventdata, handles)
+% hObject    handle to clearSet (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 handles.skullPoints = [];
 guidata(hObject,handles);
 end
-function editSet1_Callback(hObject, eventdata, handles)
-% hObject    handle to editSet1 (see GCBO)
+function editSet_Callback(hObject, eventdata, handles)
+% hObject    handle to editSet (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
@@ -1567,14 +1564,6 @@ end
 
 
 % --------------------------------------------------------------------
-function SucktionMenu_Callback(hObject, eventdata, handles)
-% hObject    handle to SucktionMenu (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-end
-
-
-% --------------------------------------------------------------------
 function sucktionSpiralMenu_Callback(hObject, eventdata, handles)
 % hObject    handle to sucktionSpiralMenu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -1585,7 +1574,7 @@ fig = figure('Name','Sucktion Parameters',...
     'Units','pixels',...
     'Position',[200,200,400,180],...
     'NumberTitle','off',...
-    'Tag','millWindow',...
+    'Tag','suckWindow',...
     'MenuBar','none',...
     'ToolBar','none');
 figHandles = guidata(fig);
@@ -1693,4 +1682,19 @@ fprintf(handles.device,' G90 G0 Z15; (Move the Drill Higher)');
 fprintf(handles.device,' G90 G0 Y-30; (Move the Drill Higher)');
 fprintf(handles.device,' G90 G0 X-120; (Move the Drill/plate to the side)');
 fprintf(handles.device,' G90 G0 Y-60; (Move the Drill Higher)');
+end
+
+
+% --------------------------------------------------------------------
+function SucktionMenu_Callback(hObject, eventdata, handles)
+% hObject    handle to SucktionMenu (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+end
+
+% --------------------------------------------------------------------
+function MillingMenu_Callback(hObject, eventdata, handles)
+% hObject    handle to MillingMenu (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
 end
