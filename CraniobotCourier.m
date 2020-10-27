@@ -22,7 +22,7 @@ else
     gui_mainfcn(gui_State, varargin{:});
 end 
 end
-function CraniobotCourier_OpeningFcn(hObject, eventdata, handles, varargin)
+function CraniobotCourier_OpeningFcn(hObject, ~, handles, varargin)
 % Objective: Initializes the GUI and many of its persistent variables, all of
 % which are stored in the 'handles' structue
 
@@ -95,7 +95,7 @@ handles.toolTable = readtable(filename);
 % Update handles structure
 guidata(hObject, handles);
 end
-function varargout = CraniobotCourier_OutputFcn(hObject, eventdata, handles)
+function varargout = CraniobotCourier_OutputFcn(~, ~, handles)
 % IDK what this function does, but don't delete it
 
 % varargout  cell array for returning output args (see VARARGOUT);
@@ -107,7 +107,7 @@ function varargout = CraniobotCourier_OutputFcn(hObject, eventdata, handles)
 varargout{1} = handles.output;
 end
 %% Port Connection
-function portMenu_Callback(hObject, eventdata, handles)
+function portMenu_Callback(hObject, ~, handles)
 % Objective: Allows user to specify which serial object to connect to
 
 % hObject    handle to portMenu (see GCBO)
@@ -123,7 +123,7 @@ portList = string(portList);
 handles.port = portList(get(hObject,'Value'));
 guidata(gcf,handles);
 end
-function portMenu_CreateFcn(hObject, eventdata, handles)
+function portMenu_CreateFcn(hObject, ~, ~)
 % Objective: Used in the creation of the port menu list 
 % hObject    handle to portMenu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -133,7 +133,7 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
     set(hObject,'BackgroundColor','white');
 end
 end
-function connectButton_Callback(hObject, eventdata, handles)
+function connectButton_Callback(hObject, ~, handles)
 % Objective: Open/close a serial connection to the Craniobot and enable buttons
 
 % hObject    handle to connectButton (see GCBO)
@@ -228,7 +228,7 @@ end
     
 guidata(hObject,handles);
 end
-function refreshButton_Callback(hObject, eventdata, handles)
+function refreshButton_Callback(~, ~, handles)
 % Objective: refreshes the list of serial objects connected to the computer
 
 % hObject    handle to refreshButton (see GCBO)
@@ -237,7 +237,7 @@ function refreshButton_Callback(hObject, eventdata, handles)
 set(handles.portMenu,'String',seriallist,'Value',1);
 end
 %% Console/Command Line
-function consoleWindow_CreateFcn(hObject, eventdata, handles)
+function consoleWindow_CreateFcn(hObject, ~, ~)
 % Objective: Creates the console window
 
 % hObject    handle to consoleWindow (see GCBO)
@@ -251,7 +251,7 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
     set(hObject,'BackgroundColor','white');
 end
 end
-function commandLine_CreateFcn(hObject, eventdata, handles)
+function commandLine_CreateFcn(hObject, ~, ~)
 % Objective: Creates the command line
 
 % hObject    handle to commandLine (see GCBO)
@@ -264,7 +264,7 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
     set(hObject,'BackgroundColor','white');
 end
 end
-function clearWindow_Callback(hObject, eventdata, handles)
+function clearWindow_Callback(~, ~, handles)
 % Objective: Clears all text from the console window
 
 % Variables:
@@ -276,7 +276,7 @@ consoleWindow = handles.consoleWindow;
 set(consoleWindow,'String',{},...
     'Value',1);
 end
-function commandLine_Callback(hObject, eventdata, handles)
+function commandLine_Callback(hObject, ~, handles)
 % hObject    handle to commandLine (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -292,7 +292,7 @@ fprintf(device,upper(text));
 guidata(hObject, handles);
 end
 %% Jogging 
-function linearStepSize_CreateFcn(hObject, eventdata, handles)
+function linearStepSize_CreateFcn(hObject, ~, ~)
 % Objective: Creates the button group that holds the units radio buttons
 
 % hObject    handle to linearStepSize (see GCBO)
@@ -305,7 +305,7 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
     set(hObject,'BackgroundColor','white');
 end
 end
-function linearStepSize_Callback(hObject, eventdata, handles)
+function linearStepSize_Callback(hObject, ~, ~)
 % Objective: This callback doesn't do anything since all that is needed is the string
 % stored in the textbox, which is used in the jogging buttons. But don't delete
 % this!
@@ -321,7 +321,7 @@ if isempty(str2double(str))
     set(hObject,'string',1);
 end
 end
-function linearStepGrp_SelectionChangedFcn(hObject, eventdata, handles)
+function linearStepGrp_SelectionChangedFcn(hObject, ~, handles)
 % Objective: creates the button group that holds the units and step size
 % buttons. Its just used for ease of moving the button group in the future.
     
@@ -337,7 +337,7 @@ else
 end
 guidata(hObject,handles);
 end
-function XPlus_Callback(hObject, eventdata, handles)
+function XPlus_Callback(~, ~, handles)
 % Objective: Sends a gcode command to move the Craniobot incrimentally in the 
 % given axis and direction using the step size from the linearStepGrp
 
@@ -350,7 +350,7 @@ stepSize = get(handles.linearStepSize,'String');
 command = string(strcat('G91 G0 X',stepSize));
 fprintf(handles.device,command); % move to new position
 end
-function XMinus_Callback(hObject, eventdata, handles)
+function XMinus_Callback(~, ~, handles)
 % Objective: Sends a gcode command to move the Craniobot incrimentally in the 
 % given axis and direction using the step size from the linearStepGrp
 
@@ -363,7 +363,7 @@ stepSize = get(handles.linearStepSize,'String');
 command = string(strcat('G91 G0 X-',stepSize));
 fprintf(handles.device,command); % move to new position
 end
-function YPlus_Callback(hObject, eventdata, handles)
+function YPlus_Callback(~, ~, handles)
 % Objective: Sends a gcode command to move the Craniobot incrimentally in the 
 % given axis and direction using the step size from the linearStepGrp
     
@@ -375,7 +375,7 @@ stepSize = get(handles.linearStepSize,'String');
 command = string(strcat('G91 G0 Y',stepSize));
 fprintf(handles.device,command); % move to new position
 end
-function YMinus_Callback(hObject, eventdata, handles)
+function YMinus_Callback(~, ~, handles)
 % Objective: Sends a gcode command to move the Craniobot incrimentally in the 
 % given axis and direction using the step size from the linearStepGrp
     
@@ -388,7 +388,7 @@ stepSize = get(handles.linearStepSize,'String');
 command = string(strcat('G91 G0 Y-',stepSize));
 fprintf(handles.device,command); % move to new position
 end
-function ZPlus_Callback(hObject, eventdata, handles)
+function ZPlus_Callback(~, ~, handles)
 % Objective: Sends a gcode command to move the Craniobot incrimentally in the 
 % given axis and direction using the step size from the linearStepGrp
     
@@ -401,7 +401,7 @@ stepSize = get(handles.linearStepSize,'String');
 command = string(strcat('G91 G0 Z',stepSize));
 fprintf(handles.device,command); % move to new position
 end
-function ZMinus_Callback(hObject, eventdata, handles)
+function ZMinus_Callback(~, ~, handles)
 % Objective: Sends a gcode command to move the Craniobot incrimentally in the 
 % given axis and direction using the step size from the linearStepGrp
     
@@ -414,16 +414,16 @@ stepSize = get(handles.linearStepSize,'String');
 command = string(strcat('G91 G0 Z-',stepSize));
 fprintf(handles.device,command); % move to new position
 end
-function MillimeterButton_Callback(hObject, eventdata, handles)
+function MillimeterButton_Callback(~, ~, ~)
 % This callback doesn't do anything since all that is needed is the state of the
 % button. But don't delete it!
 end
-function InchesButton_Callback(hObject, eventdata, handles)
+function InchesButton_Callback(~, ~, ~)
 % This callback doesn't do anything since all that is needed is the state of the
 % button. But don't delete it!
 end
 %% Axis Control Commands
-function setOriginButton_Callback(hObject, eventdata, handles)
+function setOriginButton_Callback(~, ~, handles)
 % Objective: Sets current position to 0 for all axes
 
 % hObject    handle to setOriginButton (see GCBO)
@@ -434,7 +434,7 @@ function setOriginButton_Callback(hObject, eventdata, handles)
 fprintf(handles.device,'G28.3 X0 Y0 Z0 A0 B0 C0; (Set Origin)');
 
 end
-function moveToOriginButton_Callback(hObject, eventdata, handles)
+function moveToOriginButton_Callback(~, ~, handles)
 % Objective: Moves all axes to their home position
 
 % hObject    handle to moveToOriginButton (see GCBO)
@@ -447,7 +447,7 @@ fprintf(handles.device,' G90 G0 Y-20; (Move to XY origin)');
 fprintf(handles.device,' G90 G0 X0; (Move to XY origin)');
 fprintf(handles.device,' G90 G0 Y0; (Move to Z origin)');
 end
-function clearButton_Callback(hObject, eventdata, handles)
+function clearButton_Callback(~, ~, handles)
 % Objective: used to clear alarms
 
 % hObject    handle to clearButton (see GCBO)
@@ -460,7 +460,7 @@ fprintf(handles.device,' G90 G0 X0 Y0 Z3; (Move to Milling Position)');
 %set(handles.consoleWindow,'String',data,...
 %           'Value',length(data));
 end
-function resetButton_Callback(hObject, eventdata, handles)
+function resetButton_Callback(~, ~, handles)
 % hObject    handle to resetButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -473,7 +473,7 @@ data{end+1} = "Resetting Machine..."; %concatenate newData with the old data
 set(handles.consoleWindow,'String',data,...
            'Value',length(data));
 end
-function resetXButton_Callback(hObject, eventdata, handles)
+function resetXButton_Callback(~, ~, handles)
 % Objective: Set the current X axis position to 0
 % hObject    handle to resetXButton (see GCBO)
 
@@ -484,7 +484,7 @@ function resetXButton_Callback(hObject, eventdata, handles)
 % Set controller position
 fprintf(handles.device,'G28.3 X0; (Reset X Axis)');
 end
-function resetYButton_Callback(hObject, eventdata, handles)
+function resetYButton_Callback(~, ~, handles)
 % hObject    handle to resetYButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -492,7 +492,7 @@ function resetYButton_Callback(hObject, eventdata, handles)
 % Set controller position
 fprintf(handles.device,'G28.3 Y0; (Reset Y Axis)');
 end
-function resetZButton_Callback(hObject, eventdata, handles)
+function resetZButton_Callback(~, ~, handles)
 % hObject    handle to resetZButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -500,7 +500,7 @@ function resetZButton_Callback(hObject, eventdata, handles)
 % Set controller position
 fprintf(handles.device,'G28.3 Z0; (Reset Z Axis)');
 end
-function resetAButton_Callback(hObject, eventdata, handles)
+function resetAButton_Callback(~, ~, handles)
 % hObject    handle to resetAButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -508,7 +508,7 @@ function resetAButton_Callback(hObject, eventdata, handles)
 % Set controller position
 fprintf(handles.device,'G28.3 A0; (Reset A Axis)');
 end
-function resetBButton_Callback(hObject, eventdata, handles)
+function resetBButton_Callback(~, ~, handles)
 % hObject    handle to resetBButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -516,7 +516,7 @@ function resetBButton_Callback(hObject, eventdata, handles)
 % Set controller position
 fprintf(handles.device,'G28.3 B0; (Reset B Axis)');
 end
-function resetCButton_Callback(hObject, eventdata, handles)
+function resetCButton_Callback(~, ~, handles)
 % hObject    handle to resetCButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -524,7 +524,7 @@ function resetCButton_Callback(hObject, eventdata, handles)
 % Set controller position
 fprintf(handles.device,'G28.3 C0; (Reset C Axis)');
 end
-function homeAllAxes_Callback(hObject, eventdata, handles)
+function homeAllAxes_Callback(~, ~, handles)
 % Objective: Homes all axes and sets values to 0
 
 % hObject    handle to homeAllAxes (see GCBO)
@@ -533,7 +533,7 @@ function homeAllAxes_Callback(hObject, eventdata, handles)
 
 fprintf(handles.device,'G38.2 Z-90 F100; (Z Auto Down)'); %Z auto down while probing
 end
-function G55Button_Callback(hObject, eventdata, handles)
+function G55Button_Callback(~, ~, handles)
 % hObject    handle to G55Button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -545,7 +545,7 @@ str = strcat("G10 L2 P2 X0 Y0 Z",offset,"A0 B0 C0");
 fprintf(handles.device,str);
 fprintf(handles.device,"G55");
 end
-function G56Button_Callback(hObject, eventdata, handles)
+function G56Button_Callback(~, ~, handles)
 % hObject    handle to G56Button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -557,7 +557,7 @@ str = strcat("G10 L2 P3 X0 Y0 Z",offset,"A0 B0 C0");
 fprintf(handles.device,str);
 fprintf(handles.device,"G56");
 end
-function G55Text_Callback(hObject, eventdata, handles)
+function G55Text_Callback(~, ~, ~)
 % hObject    handle to G55Text (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -565,7 +565,7 @@ function G55Text_Callback(hObject, eventdata, handles)
 % Hints: get(hObject,'String') returns contents of G55Text as text
 %        str2double(get(hObject,'String')) returns contents of G55Text as a double
 end
-function G55Text_CreateFcn(hObject, eventdata, handles)
+function G55Text_CreateFcn(hObject, ~, ~)
 % hObject    handle to G55Text (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
@@ -576,7 +576,7 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
     set(hObject,'BackgroundColor','white');
 end
 end
-function G56Text_Callback(hObject, eventdata, handles)
+function G56Text_Callback(~, ~, ~)
 % hObject    handle to G56Text (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -584,7 +584,7 @@ function G56Text_Callback(hObject, eventdata, handles)
 % Hints: get(hObject,'String') returns contents of G56Text as text
 %        str2double(get(hObject,'String')) returns contents of G56Text as a double
 end
-function G56Text_CreateFcn(hObject, eventdata, handles)
+function G56Text_CreateFcn(hObject, ~, ~)
 % hObject    handle to G56Text (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
@@ -596,7 +596,7 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 end
 %% Menus and Program Generation
-function ProbingMenu_Callback(hObject, eventdata, handles)
+function ProbingMenu_Callback(~, ~, handles)
 % hObject    handle to ProbingMenu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -609,7 +609,7 @@ else
 end
 end
 
-function probeCircleMenu_Callback(hObject, eventdata, handles)
+function probeCircleMenu_Callback(hObject, ~, handles)
 % Objective: create window to input probing parameters and generate gcode script 
 % hObject    handle to probeCircleMenu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -671,7 +671,7 @@ figHandles.probeSkullButton = uicontrol(fig,'Style','pushbutton',...
 
 guidata(fig,figHandles);
 end
-function probeSpiralMenu_Callback(hObject, eventdata, handles)
+function probeSpiralMenu_Callback(hObject, ~, handles)
 % Objective: create window to input probing parameters and generate gcode script 
 % hObject    handle to probeCircleMenu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -737,7 +737,7 @@ figHandles.probeSkullSButton = uicontrol(fig,'Style','pushbutton',...
 
 guidata(fig,figHandles);
 end
-function probeDotMenu_Callback(hObject, eventdata, handles)
+function probeDotMenu_Callback(hObject, ~, handles)
 % Objective: create window to input probing parameters and generate gcode script 
 % hObject    handle to probeCircleMenu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -788,7 +788,7 @@ figHandles.probeSkullDButton = uicontrol(fig,'Style','pushbutton',...
     'Callback',@probeDotButton_Callback);
 guidata(fig,figHandles);
 end
-function probeWindowMenu_Callback(hObject, eventdata, handles)
+function probeWindowMenu_Callback(hObject, ~, handles)
 % hObject    handle to probeWindowMenu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -821,14 +821,14 @@ figHandles.probeSkullButton = uicontrol(fig,'Style','pushbutton',...
 
 guidata(fig,figHandles);
 end
-function clearSet_Callback(hObject, eventdata, handles)
+function clearSet_Callback(hObject, ~, handles)
 % hObject    handle to clearSet (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 handles.skullPoints = [];
 guidata(hObject,handles);
 end
-function editSet_Callback(hObject, eventdata, handles)
+function editSet_Callback(hObject, ~, handles)
 % hObject    handle to editSet (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -894,7 +894,7 @@ title(sprintf('%d Total Points',length(X)));
     end
 
 end
-function millMenu_Callback(hObject, eventdata, handles)
+function millMenu_Callback(~, ~, ~)
 % Objective: create window to input milling parameters and generate gcode script 
 
 % hObject    handle to millMenu (see GCBO)
@@ -949,7 +949,7 @@ figHandles.millSkullButton = uicontrol(fig,'Style','pushbutton',...
 
 guidata(fig,figHandles);
 end
-function toolMenu_Callback(hObject, eventdata, handles)
+function toolMenu_Callback(hObject, ~, handles)
 % Objective: Allow user to see/change all tool ofsets
 % hObject    handle to toolMenu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -991,7 +991,7 @@ table = uitable('Parent', fig,...
 % save any changes
 guidata(hObject,handles);
 end
-function probeCircleButton_Callback(hObject, eventdata, handles)
+function probeCircleButton_Callback(~, ~, ~)
 % Objective: Take user input values for desired chamber location (in stereotaxic
 % coordinates), probe the skull, and record the xyz coordinates of each point to
 % produce a tool path 
@@ -1019,7 +1019,7 @@ else
     probeCircle(diaVal,xVal,yVal,zVal,speed);
 end
 end
-function probeSpiralButton_Callback(hObject, eventdata, handles)
+function probeSpiralButton_Callback(~, ~, ~)
 % Objective: Take user input values for desired chamber location (in stereotaxic
 % coordinates), probe the skull, and record the xyz coordinates of each point to
 % produce a tool path 
@@ -1048,7 +1048,7 @@ else
     probeSpiral(suckVal,diaVal,xVal,yVal,zVal,speed);
 end
 end
-function probeDotButton_Callback(hObject, eventdata, handles)
+function probeDotButton_Callback(~, ~, ~)
 % Objective: Take user input values for desired chamber location (in stereotaxic
 % coordinates), probe the skull, and record the xyz coordinates of each point to
 % produce a tool path 
@@ -1075,7 +1075,7 @@ else
     probeDot(xVal,yVal,zVal,speed);
 end
 end
-function probeWindowButton_Callback(hObject, eventdata, handles)
+function probeWindowButton_Callback(~, ~, ~)
 % hObject    handle to probeSkullButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -1090,7 +1090,7 @@ else
     pointGen(max_steps);
 end
 end
-function millSkullButton_Callback(hObject, eventdata, handles)
+function millSkullButton_Callback(~, ~, ~)
 % Objective: Take the recorded skull points and generate a milling filling
 % accordingly
 
@@ -1121,7 +1121,7 @@ else
 end
 end
 %% File Manager
-function chooseFileButton_Callback(hObject, eventdata, handles)
+function chooseFileButton_Callback(hObject, ~, handles)
 % Objective: Allow user to choose a G-code (txt) file to be send to the Craniobot
 
 % Key Variables:
@@ -1147,7 +1147,7 @@ end
 
 
 end
-function sendFileButton_Callback(hObject, eventdata, handles)
+function sendFileButton_Callback(hObject, ~, handles)
 % Objective: Send a G-code file to the Crabiobot using Linemode
 % protocol (see g2core wiki).
 
@@ -1220,7 +1220,7 @@ set(handles.commandLine,'enable','on');
 set(handles.pauseButton,'enable','off');
 set(handles.abortButton,'enable','off');
 end
-function pauseButton_Callback(hObject, eventdata, handles)
+function pauseButton_Callback(~, ~, handles)
 % Objective: Change the button's text based on its state
 
 % hObject    handle to pauseButton (see GCBO)
@@ -1234,7 +1234,7 @@ else
     fprintf(handles.device,'~');
 end
 end
-function abortButton_Callback(hObject, eventdata, handles)
+function abortButton_Callback(~, ~, handles)
 % Objective: Cancel the rest of the file being sent to the Craniobot
 
 fprintf(handles.device,4); % 4 is the ascii character for ctrl-d
@@ -1395,7 +1395,7 @@ for i = 1:numel(fields)
                 % Print error message on console and update machine status
                 text = json.er.msg;
                 set(handles.machineStateTextBox,'String',...
-                    {"Machine State:","See Error Message"});
+                    ["Machine State:","See Error Message"]);
                 data = cellstr(get(handles.consoleWindow,'String'));
                 data{end+1} = strcat("MSG: ",text); %concatenate json-string with the old data
                 set(handles.consoleWindow,'String',data,...
@@ -1564,7 +1564,7 @@ end
 
 
 % --------------------------------------------------------------------
-function sucktionSpiralMenu_Callback(hObject, eventdata, handles)
+function sucktionSpiralMenu_Callback(~, ~, ~)
 % hObject    handle to sucktionSpiralMenu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -1629,7 +1629,7 @@ figHandles.spiralSkullButton = uicontrol(fig,'Style','pushbutton',...
 
 guidata(fig,figHandles);
 end
-function sucktionSpiralButton_Callback(hObject, eventdata, handles)
+function sucktionSpiralButton_Callback(~, ~, ~)
 % Objective: Take the recorded skull points and generate a milling filling
 % accordingly
 
@@ -1648,7 +1648,8 @@ handles    = guidata(findobj(0,'Tag','GUI'));
     thickness   = str2double(get(figHandles.SthicknessTextBox,'String'));
     feedrate    = str2double(get(figHandles.SfeedrateTextBox,'String'));
     
-    if isempty(suckVal) || isempty (diaVal) isempty(depth) || isempty(thickness) || isempty(feedrate)
+    if isempty(suckVal) || isempty(diaVal) isempty(depth) || ...
+            isempty(thickness) || isempty(feedrate);
         uiwait( errordlg('Missing input parameter...',...
                          'Input Error', 'modal') );
     else
@@ -1658,7 +1659,7 @@ handles    = guidata(findobj(0,'Tag','GUI'));
 end
 
 % --- Executes on button press in drill_replace.
-function drill_replace_Callback(hObject, eventdata, handles)
+function drill_replace_Callback(~, ~, handles)
 % hObject    handle to drill_replace (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -1668,7 +1669,7 @@ fprintf(handles.device,' G90 G0 Y-20; (Move the Drill Higher)');
 fprintf(handles.device,' G90 G0 X-120; (Move the Drill to the side)');
 end
 % --- Executes on button press in plate_replace.
-function plate_replace_Callback(hObject, eventdata, handles)
+function plate_replace_Callback(~, ~, handles)
 % hObject    handle to plate_replace (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -1681,14 +1682,14 @@ end
 
 
 % --------------------------------------------------------------------
-function SucktionMenu_Callback(hObject, eventdata, handles)
+function SucktionMenu_Callback(~, ~, ~)
 % hObject    handle to SucktionMenu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 end
 
 % --------------------------------------------------------------------
-function MillingMenu_Callback(hObject, eventdata, handles)
+function MillingMenu_Callback(~, ~, ~)
 % hObject    handle to MillingMenu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
