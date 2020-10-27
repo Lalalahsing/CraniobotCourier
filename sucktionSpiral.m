@@ -49,7 +49,7 @@ function sucktionSpiral(suckDia,circDia,thickness,depth,feedrate)
     fprintf(fileID,'%s\n',strcat("N1 G91; ",...
         "(set to relative coordinates motion)"));
     fprintf(fileID,'%s\n', "N2 G21; (set to millimeters)");
-    fprintf(fileID,'%s\n', "N3 G0 Z5; (retract before moving)");
+    fprintf(fileID,'%s\n', "N3 G0 Z3; (retract before moving)");
     fprintf(fileID,'%s\n', strcat("N4 G90 G0 X",num2str(centerPos(1)),...
       " Y",num2str(centerPos(2))));
     
