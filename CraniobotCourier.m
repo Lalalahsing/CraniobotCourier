@@ -442,8 +442,8 @@ function moveToOriginButton_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 % device     handle to serial device (Craniobot)
 
-fprintf(handles.device,' G90 G0 Z15; (Move to XY origin)');
-fprintf(handles.device,' G90 G0 Y-30; (Move to XY origin)');
+fprintf(handles.device,' G90 G0 Z20; (Move to XY origin)');
+fprintf(handles.device,' G90 G0 Y-20; (Move to XY origin)');
 fprintf(handles.device,' G90 G0 X0; (Move to XY origin)');
 fprintf(handles.device,' G90 G0 Y0; (Move to Z origin)');
 end
@@ -1639,15 +1639,11 @@ function sucktionSpiralButton_Callback(hObject, eventdata, handles)
 figHandles = guidata(findobj(0,'Tag','suckWindow')); % get handles 
 handles    = guidata(findobj(0,'Tag','GUI'));
 
-if isempty(handles.skullPoints)
-    uiwait( errordlg('Skull has not been probed yet.',...
-                     'Input Error', 'modal') );
-else
     suckVal     = str2double(get(figHandles.SchamberSuckTextBox,'String'));
     diaVal      = str2double(get(figHandles.SchamberDiameterSTextBox,'String'));
-    xVals       = handles.skullPoints(:,1);
-    yVals       = handles.skullPoints(:,2);
-    zVals       = handles.skullPoints(:,3);
+%    xVals       = handles.skullPoints(:,1);
+%    yVals       = handles.skullPoints(:,2);
+%    zVals       = handles.skullPoints(:,3);
     depth       = str2double(get(figHandles.SdepthTextBox,'String'));
     thickness   = str2double(get(figHandles.SthicknessTextBox,'String'));
     feedrate    = str2double(get(figHandles.SfeedrateTextBox,'String'));
@@ -1657,9 +1653,8 @@ else
                          'Input Error', 'modal') );
     else
         close;
-        sucktionSpiral(suckVal,diaVal,xVals,yVals,zVals,thickness,depth,feedrate);
+        sucktionSpiral(suckVal,diaVal,thickness,depth,feedrate);
     end
-end
 end
 
 % --- Executes on button press in drill_replace.
@@ -1668,8 +1663,8 @@ function drill_replace_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 fprintf(handles.device,' G21; (change to mm)');
-fprintf(handles.device,' G90 G0 Z15; (Move the Drill Higher)');
-fprintf(handles.device,' G90 G0 Y-30; (Move the Drill Higher)');
+fprintf(handles.device,' G90 G0 Z20; (Move the Drill Higher)');
+fprintf(handles.device,' G90 G0 Y-20; (Move the Drill Higher)');
 fprintf(handles.device,' G90 G0 X-120; (Move the Drill to the side)');
 end
 % --- Executes on button press in plate_replace.
@@ -1678,10 +1673,10 @@ function plate_replace_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 fprintf(handles.device,' G21; (change to mm)');
-fprintf(handles.device,' G90 G0 Z15; (Move the Drill Higher)');
-fprintf(handles.device,' G90 G0 Y-30; (Move the Drill Higher)');
+fprintf(handles.device,' G90 G0 Z20; (Move the Drill Higher)');
+fprintf(handles.device,' G90 G0 Y-20; (Move the Drill Higher)');
 fprintf(handles.device,' G90 G0 X-120; (Move the Drill/plate to the side)');
-fprintf(handles.device,' G90 G0 Y-60; (Move the Drill Higher)');
+fprintf(handles.device,' G90 G0 Y-70; (Move the Drill Higher)');
 end
 
 
