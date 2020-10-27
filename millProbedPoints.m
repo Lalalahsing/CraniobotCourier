@@ -30,11 +30,9 @@ function millProbedPoints(X,Y,Z,thickness,depth,feedrate)
     fprintf(fileID,'%s\n',strcat("N1 G91; ",...
         "(set to relative coordinates motion)"));
     fprintf(fileID,'%s\n', "N2 G21; (set to millimeters)");
-    fprintf(fileID,'%s\n', "N3 G0 Z5; (retract before moving)");
-    fprintf(fileID,'%s\n', strcat("N4 G90 G0 X",num2str(home(1)),...
-      " Y",num2str(home(2))));
-    
-    ln = 4; %line number
+    fprintf(fileID,'%s\n', "N3 G0 Z3; (retract before moving)");
+
+    ln = 3; %line number
     for j = 1:nPasses
         % Loop through each probed point
         ln = ln+1;

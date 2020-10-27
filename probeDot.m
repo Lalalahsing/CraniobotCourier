@@ -47,10 +47,8 @@ function [commandArray] = probeDot(X,Y,Z,probeSpeed)
     % make header commands
     fprintf(fileID,'%s\n', strcat("N1 G90; (set to absolute coordinates motion)"));
     fprintf(fileID,'%s\n', "N2 G21; (set to millimeters)");
-    fprintf(fileID,'%s\n', strcat("N3 G0 X",num2str(Xproj(1)),...
-            " Y",num2str(Yproj(1)),...
-            " Z",num2str(offsetVal)));
-    
+    fprintf(fileID,'%s\n', strcat("N3 G0 Z",num2str(offsetVal)));
+   
     % Loop through theta by 1 step
     ln = 3; % line number
     % Move to next X,Y probing point
