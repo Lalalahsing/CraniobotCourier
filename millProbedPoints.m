@@ -21,7 +21,7 @@ function millProbedPoints(X,Y,Z,thickness,VesselWidth,depth,feedrate)
     title(sprintf('%d Total Points',nProbedPoints));
     
     % home is the position directly above the first probed point on the skull
-    home = [X(1),Y(1),Z(1)+2];  
+    %home = [X(1),Y(1),Z(1)+2];  
 
     % create .txt file to store path
     fileID = fopen('millingPath.txt','w');

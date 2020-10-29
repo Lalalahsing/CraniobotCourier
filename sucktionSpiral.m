@@ -1,4 +1,4 @@
-function sucktionSpiral(suckDia,circDia,thickness,depth,feedrate)
+function sucktionSpiral(suckDia,circDia,X,Y,thickness,depth,feedrate)
     % Objective: After probing the skull, the user can generate a Gcode program for
     % milling the probed points.
     %
@@ -10,21 +10,21 @@ function sucktionSpiral(suckDia,circDia,thickness,depth,feedrate)
     % depth         depth per pass of mill
     % Choose resolution of points.
     
-    centerPos = [0,0,0];  
+    centerPos = [X,Y,0];  
 
     numberPoints = 36;
     resolutionCirc = 2*pi/numberPoints;
     numberCircle = (circDia-(suckDia))*2/suckDia;
-    numberPointsTotal = numberPoints*numberCircle
-    resolutionLen = (circDia-(suckDia))/numberPointsTotal
+    numberPointsTotal = numberPoints*numberCircle;
+    resolutionLen = (circDia-(suckDia))/numberPointsTotal;
     theta = 0:resolutionCirc:2*pi*numberCircle-resolutionCirc;
     length = 0:resolutionLen:(circDia-(suckDia))-resolutionLen;
 
     % Create circle projection
     Xspiral = centerPos(1) + length.*sin(theta)/2;
     Yspiral = centerPos(2) + length.*cos(theta)/2;
-    offsetVal = 3.0;
-    Zmin = -90; %used to define where the probe should home towards
+    %offsetVal = 3.0;
+    %Zmin = -90; %used to define where the probe should home towards
 
     thetacircle = 2*pi*numberCircle:resolutionCirc:2*pi*(numberCircle+1)-resolutionCirc;
     Xcircle = centerPos(1) + (circDia-(suckDia))*sin(thetacircle)/2;
@@ -52,7 +52,6 @@ function sucktionSpiral(suckDia,circDia,thickness,depth,feedrate)
     fprintf(fileID,'%s\n', "N3 G0 Z3; (retract before moving)");
     fprintf(fileID,'%s\n', strcat("N4 G90 G0 X",num2str(centerPos(1)),...
       " Y",num2str(centerPos(2))));
-    
     ln = 4; %line number
     for j = 1:nPasses
         % Loop through each probed point
@@ -65,6 +64,9 @@ function sucktionSpiral(suckDia,circDia,thickness,depth,feedrate)
         fprintf(fileID,'%s\n', strcat("N", num2str(ln),...
               " G90 G1 Z",num2str(-min(j*depth,thickness)),...
               " F",num2str(feedrate)));
+        ln = ln+1;
+        fprintf(fileID,'%s\n', strcat("N", num2str(ln),...
+              " G91 G0 Z",num2str(depth-min(j*depth,thickness))));
         if nProbedPoints >= 2
             for i = 2:nProbedPoints
                 ln = ln+1;
@@ -74,6 +76,9 @@ function sucktionSpiral(suckDia,circDia,thickness,depth,feedrate)
                   " Y",num2str(Y(i)),...
                   " Z",num2str(-min(j*depth,thickness)),...
                   " F",num2str(feedrate)));
+                ln = ln+1;
+                fprintf(fileID,'%s\n', strcat("N", num2str(ln),...
+                  " G91 G0 Z",num2str(depth-min(j*depth,thickness))));
             end
         end
         % Go back to the starting point of the circle so we can
