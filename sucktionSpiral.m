@@ -12,7 +12,7 @@ function sucktionSpiral(suckDia,circDia,X,Y,thickness,depth,feedrate)
     
     centerPos = [X,Y,0];  
 
-    numberPoints = 36;
+    numberPoints = circDia/suckDia;
     resolutionCirc = 2*pi/numberPoints;
     numberCircle = (circDia-(suckDia))*2/suckDia;
     numberPointsTotal = numberPoints*numberCircle;
@@ -66,7 +66,9 @@ function sucktionSpiral(suckDia,circDia,X,Y,thickness,depth,feedrate)
               " F",num2str(feedrate)));
         ln = ln+1;
         fprintf(fileID,'%s\n', strcat("N", num2str(ln),...
-              " G91 G0 Z",num2str(depth-min(j*depth,thickness))));
+              " G90 G0 Z0"));
+ %       fprintf(fileID,'%s\n', strcat("N", num2str(ln),...
+ %             " G90 G0 Z",num2str(depth-min(j*depth,thickness))));
         if nProbedPoints >= 2
             for i = 2:nProbedPoints
                 ln = ln+1;
@@ -78,7 +80,9 @@ function sucktionSpiral(suckDia,circDia,X,Y,thickness,depth,feedrate)
                   " F",num2str(feedrate)));
                 ln = ln+1;
                 fprintf(fileID,'%s\n', strcat("N", num2str(ln),...
-                  " G91 G0 Z",num2str(depth-min(j*depth,thickness))));
+                  " G90 G0 Z0"));
+%                fprintf(fileID,'%s\n', strcat("N", num2str(ln),...
+%                  " G90 G0 Z",num2str(depth-min(j*depth,thickness))));
             end
         end
         % Go back to the starting point of the circle so we can
