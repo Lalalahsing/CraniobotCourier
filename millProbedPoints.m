@@ -1,4 +1,4 @@
-function millProbedPoints(X,Y,Z,thickness,VesselWidth,depth,feedrate)
+function millProbedPoints(X,Y,Z,thickness,VesselWidth,depth,feedrate,feedrateV)
     % Objective: After probing the skull, the user can generate a Gcode program for
     % milling the probed points.
     %
@@ -35,6 +35,8 @@ function millProbedPoints(X,Y,Z,thickness,VesselWidth,depth,feedrate)
     ln = 3; %line number
     for j = 1:nPasses
         % Loop through each probed point
+        InVessel = 0;
+        OutVessel = 0;
         ln = ln+1;
         fprintf(fileID,'%s\n', strcat("N", num2str(ln),...
               " G90 G0 X",num2str(X(1)),...
@@ -47,14 +49,36 @@ function millProbedPoints(X,Y,Z,thickness,VesselWidth,depth,feedrate)
         if nProbedPoints >= 2
             for i = 2:nProbedPoints
                 if abs(X(i)) <= VesselWidth/2
-                    ln = ln+1;
+                    if (abs((X(i)) < VesselWidth/2) & (OutVessel))
+                        ln = ln+1;
+                        Y_Vessel = (Y(i)-Y(i-1))*(VesselWidth/2-X(i-1))/(X(i)-X(i-1))+Y(i-1);
+                        Z_Vessel = (Z(i)-Z(i-1))*(VesselWidth/2-X(i-1))/(X(i)-X(i-1))+Z(i-1);
+                        fprintf(fileID,'%s\n', strcat("N", num2str(ln),...
+                        " G90 G1 X",num2str(VesselWideth/2),...
+                        " Y",num2str(Y_Vessel),...
+                        " Z",num2str(Z_Vessel-min(j*depth,thickness)+VesselWidth),...
+                        " F",num2str(feedrateV)));
+                    end
                     % Move to next X,Y,Z position
+                    ln = ln+1;
                     fprintf(fileID,'%s\n', strcat("N", num2str(ln),...
                     " G90 G1 X",num2str(X(i)),...
                     " Y",num2str(Y(i)),...
                     " Z",num2str(Z(i)-min(j*depth,thickness)+VesselWidth),...
-                    " F",num2str(feedrate)));
+                    " F",num2str(feedrateV)));
+                    InVessel = 1;
+                    OutVessel = 0;
                 else
+                    if (abs((X(i)) > VesselWidth/2) & (InVessel))
+                        ln = ln+1;
+                        Y_Vessel = (Y(i)-Y(i-1))*(VesselWidth/2-X(i-1))/(X(i)-X(i-1))+Y(i-1);
+                        Z_Vessel = (Z(i)-Z(i-1))*(VesselWidth/2-X(i-1))/(X(i)-X(i-1))+Z(i-1);
+                        fprintf(fileID,'%s\n', strcat("N", num2str(ln),...
+                        " G90 G1 X",num2str(VesselWideth/2),...
+                        " Y",num2str(Y_Vessel),...
+                        " Z",num2str(Z_Vessel-min(j*depth,thickness)+VesselWidth),...
+                        " F",num2str(feedrateV)));
+                    end
                     ln = ln+1;
                     % Move to next X,Y,Z position
                     fprintf(fileID,'%s\n', strcat("N", num2str(ln),...
@@ -62,6 +86,8 @@ function millProbedPoints(X,Y,Z,thickness,VesselWidth,depth,feedrate)
                         " Y",num2str(Y(i)),...
                         " Z",num2str(Z(i)-min(j*depth,thickness)),...
                         " F",num2str(feedrate)));
+                    InVessel = 0;
+                    OutVessel = 1;
                 end
             end
             ln = ln+1;
