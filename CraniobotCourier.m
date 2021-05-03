@@ -445,7 +445,7 @@ function moveToOriginButton_Callback(~, ~, handles)
 % device     handle to serial device (Craniobot)
 
 fprintf(handles.device,' G90 G0 Z20; (Move to XY origin)');
-fprintf(handles.device,' G90 G0 Y-20; (Move to XY origin)');
+fprintf(handles.device,' G90 G0 Y-25; (Move to XY origin)');
 fprintf(handles.device,' G90 G0 X0; (Move to XY origin)');
 fprintf(handles.device,' G90 G0 Y0; (Move to Z origin)');
 end
@@ -1804,7 +1804,7 @@ function drill_replace_Callback(~, ~, handles)
 % handles    structure with handles and user data (see GUIDATA)
 fprintf(handles.device,' G21; (change to mm)');
 fprintf(handles.device,' G90 G0 Z20; (Move the Drill Higher)');
-fprintf(handles.device,' G90 G0 Y-20; (Move the Drill Higher)');
+fprintf(handles.device,' G90 G0 Y-25; (Move the Drill Higher)');
 fprintf(handles.device,' G90 G0 X-120; (Move the Drill to the side)');
 end
 % --- Executes on button press in plate_replace.
@@ -1814,7 +1814,7 @@ function plate_replace_Callback(~, ~, handles)
 % handles    structure with handles and user data (see GUIDATA)
 fprintf(handles.device,' G21; (change to mm)');
 fprintf(handles.device,' G90 G0 Z20; (Move the Drill Higher)');
-fprintf(handles.device,' G90 G0 Y-20; (Move the Drill Higher)');
+fprintf(handles.device,' G90 G0 Y-25; (Move the Drill Higher)');
 fprintf(handles.device,' G90 G0 X-120; (Move the Drill/plate to the side)');
 fprintf(handles.device,' G90 G0 Y-70; (Move the Drill Higher)');
 end
