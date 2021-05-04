@@ -1,4 +1,4 @@
-function millProbedPoints(X,Y,Z,thickness,VesselWidth,depth,feedrate,feedrateV)
+function millProbedPoints(X,Y,Z,thickness,VesselWidth,VesselHeight,depth,feedrate,feedrateV)
     % Objective: After probing the skull, the user can generate a Gcode program for
     % milling the probed points.
     %
@@ -11,6 +11,7 @@ function millProbedPoints(X,Y,Z,thickness,VesselWidth,depth,feedrate,feedrateV)
 
     nProbedPoints = numel(X);
     nPasses = ceil(thickness/depth);
+    HalfVesselWidth = VesselWidth/2
     
     figure('Name','Surface Map');
     scatter3(X,Y,Z);
@@ -48,15 +49,15 @@ function millProbedPoints(X,Y,Z,thickness,VesselWidth,depth,feedrate,feedrateV)
               " F",num2str(feedrate)));
         if nProbedPoints >= 2
             for i = 2:nProbedPoints
-                if abs(X(i)) <= VesselWidth/2
-                    if (abs((X(i)) < VesselWidth/2) & (OutVessel))
+                if abs(X(i)) <= HalfVesselWidth
+                    if (abs((X(i)) < HalfVesselWidth) & (OutVessel))
                         ln = ln+1;
-                        Y_Vessel = (Y(i)-Y(i-1))*(VesselWidth/2-X(i-1))/(X(i)-X(i-1))+Y(i-1);
-                        Z_Vessel = (Z(i)-Z(i-1))*(VesselWidth/2-X(i-1))/(X(i)-X(i-1))+Z(i-1);
+                        Y_Vessel = (Y(i)-Y(i-1))*(HalfVesselWidth-X(i-1))/(X(i)-X(i-1))+Y(i-1);
+                        Z_Vessel = (Z(i)-Z(i-1))*(HalfVesselWidth-X(i-1))/(X(i)-X(i-1))+Z(i-1);
                         fprintf(fileID,'%s\n', strcat("N", num2str(ln),...
-                        " G90 G1 X",num2str(VesselWideth/2),...
+                        " G90 G1 X",num2str(HalfVesselWideth),...
                         " Y",num2str(Y_Vessel),...
-                        " Z",num2str(Z_Vessel-min(j*depth,thickness)+VesselWidth),...
+                        " Z",num2str(Z_Vessel-min(j*depth,thickness)+VesselHeight),...
                         " F",num2str(feedrateV)));
                     end
                     % Move to next X,Y,Z position
@@ -64,19 +65,19 @@ function millProbedPoints(X,Y,Z,thickness,VesselWidth,depth,feedrate,feedrateV)
                     fprintf(fileID,'%s\n', strcat("N", num2str(ln),...
                     " G90 G1 X",num2str(X(i)),...
                     " Y",num2str(Y(i)),...
-                    " Z",num2str(Z(i)-min(j*depth,thickness)+VesselWidth),...
+                    " Z",num2str(Z(i)-min(j*depth,thickness)+VesselHeight),...
                     " F",num2str(feedrateV)));
                     InVessel = 1;
                     OutVessel = 0;
                 else
-                    if (abs((X(i)) > VesselWidth/2) & (InVessel))
+                    if (abs((X(i)) > HalfVesselWidth) & (InVessel))
                         ln = ln+1;
-                        Y_Vessel = (Y(i)-Y(i-1))*(VesselWidth/2-X(i-1))/(X(i)-X(i-1))+Y(i-1);
-                        Z_Vessel = (Z(i)-Z(i-1))*(VesselWidth/2-X(i-1))/(X(i)-X(i-1))+Z(i-1);
+                        Y_Vessel = (Y(i)-Y(i-1))*(HalfVesselWidth-X(i-1))/(X(i)-X(i-1))+Y(i-1);
+                        Z_Vessel = (Z(i)-Z(i-1))*(HalfVesselWidth-X(i-1))/(X(i)-X(i-1))+Z(i-1);
                         fprintf(fileID,'%s\n', strcat("N", num2str(ln),...
                         " G90 G1 X",num2str(VesselWideth/2),...
                         " Y",num2str(Y_Vessel),...
-                        " Z",num2str(Z_Vessel-min(j*depth,thickness)+VesselWidth),...
+                        " Z",num2str(Z_Vessel-min(j*depth,thickness)+VesselHeight),...
                         " F",num2str(feedrateV)));
                     end
                     ln = ln+1;
