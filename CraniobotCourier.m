@@ -1207,32 +1207,32 @@ end
 % 'userdata' variable.
 command = {};
 while ~feof(prgmFile) && ~get(handles.abortButton,'Value')
-    if probeFile
-        while (get(gcbo,'userdata') > 0) && ~get(handles.pauseButton,'Value') && ~feof(prgmFile)% && ~handles.lnRead
-            % send line
+    while (get(gcbo,'userdata') > 0) && ~get(handles.pauseButton,'Value') && ~feof(prgmFile)&& ~get(handles.abortButton,'Value')
+        % send line
+        command = fgetl(prgmFile);
+        if (command == "HOLD")
+            set(handles.pauseButton,'String','Resume','Value',1);
+            drawnow();
+            waitfor(handles.pauseButton,'Value',0);
+            drawnow();
+            %while get(handles.pauseButton, 'Value')
+            %    pause;
+            %    drawnow(); 
+            %end
+            %if (get(handles.abortButton,'Value')
+            %    break;
+            %end
             command = fgetl(prgmFile);
-            fprintf(handles.device,command);
-            if feof(prgmFile)
-                break;
-            end
-            set(gcbo,'userdata',get(gcbo,'userdata')-1);
-            drawnow(); 
         end
-        drawnow();      
-    else
-        while (get(gcbo,'userdata') > 0) && ~get(handles.pauseButton,'Value') && ~feof(prgmFile)
-            % send line
-            command = fgetl(prgmFile);
-            fprintf(handles.device,command);
-            if feof(prgmFile)
-                break;
-            end
-            % decrement number of lines to be sent to arduino
-            set(gcbo,'userdata',get(gcbo,'userdata')-1);
-            drawnow(); 
+        fprintf(handles.device,command);
+        if feof(prgmFile)
+            break;
         end
-        drawnow();
+        % decrement number of lines to be sent to arduino
+        set(gcbo,'userdata',get(gcbo,'userdata')-1);
+        drawnow(); 
     end
+    drawnow();
 end
 fclose(prgmFile);
 set(gcbo,'enable','on','Value',0); % reset Send File button
@@ -1245,6 +1245,7 @@ set(findall(handles.commonCommandsGrp,...
 set(handles.commandLine,'enable','on');
 set(handles.pauseButton,'enable','off');
 set(handles.abortButton,'enable','off');
+drawnow();
 end
 function pauseButton_Callback(~, ~, handles)
 % Objective: Change the button's text based on its state
@@ -1262,7 +1263,8 @@ end
 end
 function abortButton_Callback(~, ~, handles)
 % Objective: Cancel the rest of the file being sent to the Craniobot
-
+if get(handles.pauseButton,'Value')
+    fprintf(handles.device,'~');
 fprintf(handles.device,4); % 4 is the ascii character for ctrl-d
 set(handles.pauseButton,'String','Pause','Value',0);
 end
