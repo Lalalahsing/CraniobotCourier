@@ -1265,6 +1265,7 @@ function abortButton_Callback(~, ~, handles)
 % Objective: Cancel the rest of the file being sent to the Craniobot
 if get(handles.pauseButton,'Value')
     fprintf(handles.device,'~');
+end
 fprintf(handles.device,4); % 4 is the ascii character for ctrl-d
 set(handles.pauseButton,'String','Pause','Value',0);
 end
